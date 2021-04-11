@@ -1,14 +1,24 @@
+from parser_base import ParserBaseClass
 from bs4 import BeautifulSoup
 import urllib.request as url
 
 url_page = r"https://de.pons.com/%C3%BCbersetzung/deutsch-polnisch/kraft"
+
+
+class PonsParser(ParserBaseClass):
+    def __init__(self):
+        super().__init__()
+
+    def parse(self):
+        pass
+
 
 if __name__ == '__main__':
     with url.urlopen(url_page) as f:
         page_contents = f.read()
         page_contents = page_contents.decode('utf-8')
 
-    #TODO: move pons parsing to another class
+    # TODO: move pons parsing to another class
 
     soup = BeautifulSoup(page_contents, 'html.parser')
     for result_div in soup.find_all('div', attrs={'class': 'entry'}):
@@ -20,7 +30,7 @@ if __name__ == '__main__':
         flexion = header.find('span', attrs={'class': 'flexion'}) or ""
         if flexion != "":
             flexion = "".join(flexion.stripped_strings)
-        object_case = header.find('span', attrs={'class' : 'object-case'}) or ""
+        object_case = header.find('span', attrs={'class': 'object-case'}) or ""
         if object_case != "":
             object_case = "".join(object_case.stripped_strings)
         style = header.find('span', attrs={'class': 'style'}) or ""
